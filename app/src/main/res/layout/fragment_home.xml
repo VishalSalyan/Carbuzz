@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Explore"
+        android:textSize="20dp"
+        android:textFontWeight="2"
+        android:textColor="@color/blackcolor"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/explore_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Car Collection"
+        android:textSize="20dp"
+        android:textFontWeight="2"
+        android:textColor="@color/blackcolor"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/new_cars_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

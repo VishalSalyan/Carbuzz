@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_container"
+        android:layout_width="200dp"
+        android:layout_height="220dp"
+        android:padding="3dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="3dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/iv_car_image"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_weight="0.5"
+                android:scaleType="fitXY"
+                android:src="@drawable/electric" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_car_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Car   "
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blackcolor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_car_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Used Audi R8"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

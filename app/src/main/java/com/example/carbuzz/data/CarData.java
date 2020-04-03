@@ -1,12 +1,7 @@
 package com.example.carbuzz.data;
 
 public class CarData {
-
-
-
-
     private String name = "";
-
     private String startDate = "";
 
     public String getName() {
@@ -16,6 +11,7 @@ public class CarData {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getStartDate() {
         return name;
     }

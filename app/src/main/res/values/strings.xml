@@ -3,4 +3,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="say_hello_to_your_app">Say Hello to your app</string>
+    <string name="find_your_perfect_car_with_our_dealership_app">Find your perfect car with our dealership app</string>
+    <string name="e_mail">E-mail</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="if_you_don_t_have_an_account_click_below">If you don\'t have an account?Click Below</string>
+    <string name="login">Login</string>
 </resources>

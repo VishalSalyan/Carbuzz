@@ -14,6 +14,8 @@ import com.example.carbuzz.R;
 import com.example.carbuzz.adapters.CollectionCarAdapter;
 
 import com.example.carbuzz.data.CarData;
+import com.example.carbuzz.firebaseRepo.FireBaseRepo;
+import com.example.carbuzz.firebaseRepo.ServerResponse;
 
 import java.util.ArrayList;
 
@@ -21,16 +23,12 @@ import java.util.ArrayList;
 public class CollectionFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private CollectionCarAdapter mcollectionAdapter;
+    private CollectionCarAdapter collectionAdapter;
     private ArrayList<CarData> carList = new ArrayList<>();
-
 
     public CollectionFragment() {
         // Required empty public constructor
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,17 +37,31 @@ public class CollectionFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_collection, container, false);
         mRecyclerView = view.findViewById(R.id.collection_recycler_view);
 
+        initializeCollectionAdapter();
+        fetchCarList();
         CarData carData = new CarData();
         carData.setName("Electric");
         carList.add(carData);
 
 
 
-        initializeCollectionAdapter();
 
         return view;
     }
 
+    private void fetchCarList() {
+        FireBaseRepo.I.fetchCollection(new ServerResponse<ArrayList<CarData>>() {
+            @Override
+            public void onSuccess(ArrayList<CarData> body) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+
+            }
+        });
+    }
 
 
     private void initializeCollectionAdapter() {
@@ -59,8 +71,8 @@ public class CollectionFragment extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         // Initialize the adapter and attach it to the RecyclerView
-        mcollectionAdapter = new CollectionCarAdapter(getActivity(), carList);
-        mRecyclerView.setAdapter(mcollectionAdapter);
+        collectionAdapter = new CollectionCarAdapter(getActivity(), carList);
+        mRecyclerView.setAdapter(collectionAdapter);
     }
 
 }

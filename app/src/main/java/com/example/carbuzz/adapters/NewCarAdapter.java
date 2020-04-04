@@ -43,9 +43,9 @@ public class NewCarAdapter extends RecyclerView.Adapter<NewCarAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-//        final CarData carData = carList.get(position);
+        final CarData carData = carList.get(position);
 
-        holder.name.setText("Electric"/*carData.getName()*/);
+        holder.name.setText(carData.getName());
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,11 +61,10 @@ public class NewCarAdapter extends RecyclerView.Adapter<NewCarAdapter.ViewHolder
     // total number of rows
     @Override
     public int getItemCount() {
-//        if (carList == null) {
-//            return 0;
-//        }
-//        return carList.size();
-        return  15;
+        if (carList == null) {
+            return 0;
+        }
+        return carList.size();
     }
 
 
@@ -80,12 +79,7 @@ public class NewCarAdapter extends RecyclerView.Adapter<NewCarAdapter.ViewHolder
             name = itemView.findViewById(R.id.tv_car_name);
             container = itemView.findViewById(R.id.cv_container);
             carImage = itemView.findViewById(R.id.iv_car_image);
-
-
-
         }
-
     }
-
 
 }

@@ -10,22 +10,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.carbuzz.adapters.ExploreCarAdapter;
 import com.example.carbuzz.R;
 import com.example.carbuzz.adapters.NewCarAdapter;
 import com.example.carbuzz.data.CarData;
+import com.example.carbuzz.firebaseRepo.FireBaseRepo;
+import com.example.carbuzz.firebaseRepo.ServerResponse;
 
 import java.util.ArrayList;
 
+import static com.example.carbuzz.utils.Toasts.show;
+
 
 public class HomeFragment extends Fragment {
-
+    private TextView tvExploreCar, tvNewCarCollection;
     private RecyclerView mRecyclerView;
     private RecyclerView newCarsRecyclerView;
 
-    private ExploreCarAdapter mAdapter;
-    private NewCarAdapter carAdapter;
+    private ExploreCarAdapter exploreCarAdapter;
+    private NewCarAdapter newCarAdapter;
 
     private ArrayList<CarData> carList = new ArrayList<>();
     private ArrayList<CarData> newCarList = new ArrayList<>();
@@ -34,34 +39,61 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         mRecyclerView = view.findViewById(R.id.explore_recyclerView);
         newCarsRecyclerView = view.findViewById(R.id.new_cars_recycler_view);
-
-        carList.clear();
-        newCarList.clear();
-
-        CarData carData = new CarData();
-        carData.setName("Electric");
-        carList.add(carData);
-
-        CarData carData1 = new CarData();
-        carData.setName("Electric");
-        newCarList.add(carData1);
-
-        CarData carData2 = new CarData();
-        carData.setName("Hybrid");
-        newCarList.add(carData2);
+        tvExploreCar = view.findViewById(R.id.tv_explore_car);
+        tvNewCarCollection = view.findViewById(R.id.tv_new_car_collection);
 
         initializeExploreAdapter();
         initializeNewCarsAdapter();
+        fetchExploreCar();
+        fetchNewCar();
 
         return view;
+    }
+
+    private void fetchNewCar() {
+        FireBaseRepo.I.fetchNewCar(new ServerResponse<ArrayList<CarData>>() {
+            @Override
+            public void onSuccess(ArrayList<CarData> body) {
+                if (body.size() == 0) {
+                    tvNewCarCollection.setVisibility(View.GONE);
+                }
+                newCarList.clear();
+                newCarList.addAll(body);
+                newCarAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                show.longMsg(getActivity(), error.toString());
+            }
+        });
+    }
+
+    private void fetchExploreCar() {
+        FireBaseRepo.I.fetchExploreCar(new ServerResponse<ArrayList<CarData>>() {
+            @Override
+            public void onSuccess(ArrayList<CarData> body) {
+                if (body.size() == 0) {
+                    tvExploreCar.setVisibility(View.GONE);
+                }
+                carList.clear();
+                carList.addAll(body);
+                exploreCarAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                show.longMsg(getActivity(), error.toString());
+            }
+        });
     }
 
     private void initializeNewCarsAdapter() {
@@ -69,8 +101,8 @@ public class HomeFragment extends Fragment {
         newCarsRecyclerView.setLayoutManager(gridLayoutManager);
 
         // Initialize the adapter and attach it to the RecyclerView
-        carAdapter = new NewCarAdapter(getActivity(), newCarList);
-        newCarsRecyclerView.setAdapter(carAdapter);
+        newCarAdapter = new NewCarAdapter(getActivity(), newCarList);
+        newCarsRecyclerView.setAdapter(newCarAdapter);
     }
 
     private void initializeExploreAdapter() {
@@ -80,8 +112,8 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         // Initialize the adapter and attach it to the RecyclerView
-        mAdapter = new ExploreCarAdapter(getActivity(), carList);
-        mRecyclerView.setAdapter(mAdapter);
+        exploreCarAdapter = new ExploreCarAdapter(getActivity(), carList);
+        mRecyclerView.setAdapter(exploreCarAdapter);
     }
 
 }

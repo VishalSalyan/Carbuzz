@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Explore"
-        android:textSize="20dp"
-        android:textFontWeight="2"
-        android:textColor="@color/blackcolor"/>
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/tv_explore_car"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/explore"
+            android:textColor="@color/blackcolor"
+            android:textFontWeight="2"
+            android:textSize="20sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/explore_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/explore_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Car Collection"
-        android:textSize="20dp"
-        android:textFontWeight="2"
-        android:textColor="@color/blackcolor"/>
+        <TextView
+            android:id="@+id/tv_new_car_collection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_car_collection"
+            android:textColor="@color/blackcolor"
+            android:textFontWeight="2"
+            android:textSize="20sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/new_cars_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/new_cars_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>

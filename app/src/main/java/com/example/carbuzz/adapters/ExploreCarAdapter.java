@@ -18,9 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-
 public class ExploreCarAdapter extends RecyclerView.Adapter<ExploreCarAdapter.ViewHolder> {
-
     private ArrayList<CarData> carList;
     private Context context;
 
@@ -28,7 +26,6 @@ public class ExploreCarAdapter extends RecyclerView.Adapter<ExploreCarAdapter.Vi
     public ExploreCarAdapter(Context context, ArrayList<CarData> carList) {
         this.context = context;
         this.carList = carList;
-
     }
 
     // inflates the row layout from xml when needed
@@ -42,10 +39,9 @@ public class ExploreCarAdapter extends RecyclerView.Adapter<ExploreCarAdapter.Vi
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final CarData carData = carList.get(position);
 
-//        final CarData carData = carList.get(position);
-
-        holder.name.setText("Electric"/*carData.getName()*/);
+        holder.name.setText(carData.getName());
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,13 +57,11 @@ public class ExploreCarAdapter extends RecyclerView.Adapter<ExploreCarAdapter.Vi
     // total number of rows
     @Override
     public int getItemCount() {
-//        if (carList == null) {
-//            return 0;
-//        }
-      //  return carList.size();
-        return  15;
+        if (carList == null) {
+            return 0;
+        }
+        return carList.size();
     }
-
 
     // stores and recycles views as they are scrolled off screen
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -80,12 +74,6 @@ public class ExploreCarAdapter extends RecyclerView.Adapter<ExploreCarAdapter.Vi
             name = itemView.findViewById(R.id.tv_car_name);
             container = itemView.findViewById(R.id.cv_container);
             carImage = itemView.findViewById(R.id.iv_car_image);
-
-
-
         }
-
     }
-
-
 }

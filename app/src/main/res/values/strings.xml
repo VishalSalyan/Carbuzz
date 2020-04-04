@@ -13,4 +13,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="if_you_don_t_have_an_account_click_below">If you don\'t have an account?Click Below</string>
     <string name="login">Login</string>
+    <string name="explore">Explore</string>
+    <string name="new_car_collection">New Car Collection</string>
 </resources>

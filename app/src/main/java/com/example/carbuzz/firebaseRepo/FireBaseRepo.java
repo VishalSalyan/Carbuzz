@@ -2,6 +2,7 @@ package com.example.carbuzz.firebaseRepo;
 
 import androidx.annotation.NonNull;
 
+import com.example.carbuzz.data.CarData;
 import com.example.carbuzz.data.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class FireBaseRepo {
     public static final FireBaseRepo I = new FireBaseRepo();
 
@@ -20,6 +23,9 @@ public class FireBaseRepo {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference userRef = database.getReference("user");
+    private DatabaseReference exploreCarRef = database.getReference("explore_car");
+    private DatabaseReference newCarRef = database.getReference("new_car");
+    private DatabaseReference carCollectionRef = database.getReference("car_collection");
 
     public void signUp(final UserData userData, final ServerResponse<Boolean> serverResponse) {
         userRef.push().setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -56,4 +62,60 @@ public class FireBaseRepo {
         });
     }
 
+    public void fetchExploreCar(final ServerResponse<ArrayList<CarData>> serverResponse) {
+        exploreCarRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<CarData> carList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CarData carData = snapshot.getValue(CarData.class);
+                    carList.add(carData);
+                }
+                serverResponse.onSuccess(carList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void fetchNewCar(final ServerResponse<ArrayList<CarData>> serverResponse) {
+        newCarRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<CarData> carList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CarData carData = snapshot.getValue(CarData.class);
+                    carList.add(carData);
+                }
+                serverResponse.onSuccess(carList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void fetchCollection(final ServerResponse<ArrayList<CarData>> serverResponse) {
+        carCollectionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<CarData> carList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CarData carData = snapshot.getValue(CarData.class);
+                    carList.add(carData);
+                }
+                serverResponse.onSuccess(carList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
 }

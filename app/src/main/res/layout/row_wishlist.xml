@@ -16,13 +16,13 @@
         app:contentPadding="3dp">
 
 
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/whitecolor"
-                android:background="@drawable/favourite"></Button>
+            android:background="@drawable/favourite"
+            android:backgroundTint="@color/whitecolor"></Button>
 
             <ImageView
                 android:id="@+id/iv_car_image"

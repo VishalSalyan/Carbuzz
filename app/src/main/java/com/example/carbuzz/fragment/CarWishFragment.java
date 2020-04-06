@@ -1,7 +1,5 @@
 package com.example.carbuzz.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.carbuzz.R;
-import com.example.carbuzz.adapters.CollectionCarAdapter;
 import com.example.carbuzz.adapters.WishlistCarAdapter;
 import com.example.carbuzz.data.CarData;
 
@@ -45,7 +42,7 @@ public class CarWishFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.collection_recycler_view);
 
         CarData carData = new CarData();
-        carData.setName("Electric");
+        carData.setCarName("Electric");
         carList.add(carData);
 
 

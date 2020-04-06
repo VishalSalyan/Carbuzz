@@ -81,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
         etConfirmPassword = findViewById(R.id.et_Confirmpassword);
 
-        btnLogin = findViewById(R.id.btn_login);
+        btnLogin = findViewById(R.id.btn_update);
         btnSignUp = findViewById(R.id.btn_signup);
     }
 

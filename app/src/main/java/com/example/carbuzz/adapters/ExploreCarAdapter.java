@@ -41,7 +41,7 @@ public class ExploreCarAdapter extends RecyclerView.Adapter<ExploreCarAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CarData carData = carList.get(position);
 
-        holder.name.setText(carData.getName());
+        holder.name.setText(carData.getCarName());
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

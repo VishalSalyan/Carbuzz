@@ -1,5 +1,7 @@
 package com.example.carbuzz.firebaseRepo;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 
 import com.example.carbuzz.data.CarData;
@@ -14,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FireBaseRepo {
     public static final FireBaseRepo I = new FireBaseRepo();
@@ -117,5 +120,105 @@ public class FireBaseRepo {
                 serverResponse.onFailure(new Throwable(databaseError.getMessage()));
             }
         });
+    }
+
+    public void setProfile(final UserData userData, final ServerResponse<String> serverResponse) {
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserData user = snapshot.getValue(UserData.class);
+                    assert user != null;
+                    if (user.getEmail().equals(userData.getEmail())) {
+                        userRef.orderByChild("email").equalTo(user.getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                    String key = childSnapshot.getKey();
+                                    assert key != null;
+                                    userRef.child(key).setValue(userData);
+                                }
+                                serverResponse.onSuccess("Update Successfully");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getCarDetails(final String id, String mode, final ServerResponse<CarData> serverResponse) {
+        switch (mode) {
+            case "Collection":
+                carCollectionRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            CarData carData = snapshot.getValue(CarData.class);
+                            assert carData != null;
+                            if (carData.getId().equals(id)) {
+                                serverResponse.onSuccess(carData);
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+                    }
+                });
+                break;
+            case "explore_car":
+                exploreCarRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            CarData carData = snapshot.getValue(CarData.class);
+                            assert carData != null;
+                            if (carData.getId().equals(id)) {
+                                serverResponse.onSuccess(carData);
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+                    }
+                });
+                break;
+            case "new_car":
+                newCarRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            CarData carData = snapshot.getValue(CarData.class);
+                            assert carData != null;
+                            if (carData.getId().equals(id)) {
+                                serverResponse.onSuccess(carData);
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+                    }
+                });
+                break;
+        }
     }
 }

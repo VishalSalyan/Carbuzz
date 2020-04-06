@@ -46,7 +46,7 @@ public class WishlistCarAdapter extends RecyclerView.Adapter<WishlistCarAdapter.
 
 //        final CarData carData = carList.get(position);
 
-        holder.name.setText("Electric"/*carData.getName()*/);
+        holder.name.setText("Electric"/*carData.getCarName()*/);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

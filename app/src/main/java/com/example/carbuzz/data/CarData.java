@@ -1,7 +1,9 @@
 package com.example.carbuzz.data;
 
 public class CarData {
-    private String name = "";
+    private String id = "";
+    private String carName = "";
+    private String description = "";
     private String transmission = "";
     private String mileage = "";
     private String color = "";
@@ -14,13 +16,30 @@ public class CarData {
     private String ownerPhoneNumber = "";
     private String ownerEmail = "";
     private String ownerAddress = "";
+    private String carImage = "";
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public void setCarName(String carName) {
+        this.carName = carName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getTransmission() {
@@ -117,5 +136,13 @@ public class CarData {
 
     public void setOwnerAddress(String ownerAddress) {
         this.ownerAddress = ownerAddress;
+    }
+
+    public String getCarImage() {
+        return carImage;
+    }
+
+    public void setCarImage(String carImage) {
+        this.carImage = carImage;
     }
 }

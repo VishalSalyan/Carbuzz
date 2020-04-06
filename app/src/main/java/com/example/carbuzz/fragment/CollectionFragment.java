@@ -40,7 +40,7 @@ public class CollectionFragment extends Fragment {
         initializeCollectionAdapter();
         fetchCarList();
         CarData carData = new CarData();
-        carData.setName("Electric");
+        carData.setCarName("Electric");
         carList.add(carData);
 
 

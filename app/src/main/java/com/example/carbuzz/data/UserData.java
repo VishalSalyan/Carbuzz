@@ -1,5 +1,7 @@
 package com.example.carbuzz.data;
 
+import java.util.ArrayList;
+
 public class UserData {
     private String name = null;
     private String userName = null;
@@ -7,6 +9,7 @@ public class UserData {
     private String phoneNumber = null;
     private String gender = null;
     private String password = null;
+    private ArrayList<String> favouriteCars = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -54,5 +57,13 @@ public class UserData {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ArrayList<String> getFavouriteCars() {
+        return favouriteCars;
+    }
+
+    public void setFavouriteCars(ArrayList<String> favouriteCars) {
+        this.favouriteCars = favouriteCars;
     }
 }

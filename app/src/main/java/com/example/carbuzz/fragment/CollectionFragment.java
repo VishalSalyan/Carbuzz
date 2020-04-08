@@ -37,14 +37,11 @@ public class CollectionFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_collection, container, false);
         mRecyclerView = view.findViewById(R.id.collection_recycler_view);
 
-        initializeCollectionAdapter();
+        initializeAdapter();
         fetchCarList();
         CarData carData = new CarData();
         carData.setCarName("Electric");
         carList.add(carData);
-
-
-
 
         return view;
     }
@@ -63,14 +60,9 @@ public class CollectionFragment extends Fragment {
         });
     }
 
-
-    private void initializeCollectionAdapter() {
-        // set up the RecyclerView in horizontal and vertical
+    private void initializeAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        //GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        // Initialize the adapter and attach it to the RecyclerView
         collectionAdapter = new CollectionCarAdapter(getActivity(), carList);
         mRecyclerView.setAdapter(collectionAdapter);
     }

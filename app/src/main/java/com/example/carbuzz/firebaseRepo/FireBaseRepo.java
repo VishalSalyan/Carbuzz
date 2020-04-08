@@ -1,11 +1,13 @@
 package com.example.carbuzz.firebaseRepo;
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 
 import com.example.carbuzz.data.CarData;
 import com.example.carbuzz.data.UserData;
+import com.example.carbuzz.utils.SessionData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -16,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class FireBaseRepo {
     public static final FireBaseRepo I = new FireBaseRepo();
@@ -220,5 +221,75 @@ public class FireBaseRepo {
                 });
                 break;
         }
+    }
+
+    public void searchCar(final ServerResponse<String> serverResponse) {
+        SessionData.getInstance().totalCarList.clear();
+        exploreCarRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CarData carData = snapshot.getValue(CarData.class);
+                    SessionData.getInstance().totalCarList.add(carData);
+                }
+                serverResponse.onSuccess("Explore Car Added");
+                newCarRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            CarData carData = snapshot.getValue(CarData.class);
+                            SessionData.getInstance().totalCarList.add(carData);
+                        }
+                        serverResponse.onSuccess("New Car Added");
+
+                        carCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    CarData carData = snapshot.getValue(CarData.class);
+                                    SessionData.getInstance().totalCarList.add(carData);
+                                }
+                                serverResponse.onSuccess("Collection Car Added");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void favouriteCars(final String email, final ServerResponse<ArrayList<String>> serverResponse) {
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserData userData = snapshot.getValue(UserData.class);
+                    if (userData.getEmail().equals(email)) {
+                        serverResponse.onSuccess(userData.getFavouriteCars());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
     }
 }

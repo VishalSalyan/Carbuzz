@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.carbuzz.firebaseRepo.FireBaseRepo;
+import com.example.carbuzz.firebaseRepo.ServerResponse;
 import com.example.carbuzz.fragment.CarWishFragment;
 import com.example.carbuzz.fragment.CollectionFragment;
 import com.example.carbuzz.fragment.HomeFragment;
@@ -36,6 +38,22 @@ public class HomeActivity extends AppCompatActivity {
         openFragment(homeFragment);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FireBaseRepo.I.searchCar(new ServerResponse<String>() {
+            @Override
+            public void onSuccess(String body) {
+                SearchFragment searchFragment = new SearchFragment();
+                searchFragment.notifySearchList();
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                show.longMsg(HomeActivity.this, error.getMessage());
+            }
+        });
+    }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,7 +85,6 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
 
     public void openFragment(Fragment fragment) {
         fragmentManager = getSupportFragmentManager();

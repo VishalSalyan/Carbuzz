@@ -12,6 +12,7 @@ import com.example.carbuzz.R;
 import com.example.carbuzz.data.UserData;
 import com.example.carbuzz.firebaseRepo.FireBaseRepo;
 import com.example.carbuzz.firebaseRepo.ServerResponse;
+import com.example.carbuzz.utils.SessionData;
 
 import static com.example.carbuzz.utils.GoTo.go;
 import static com.example.carbuzz.utils.Toasts.show;
@@ -41,13 +42,14 @@ public class LoginActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
-                UserData userData = new UserData();
+                final UserData userData = new UserData();
                 userData.setName(email);
                 userData.setPassword(password);
                 FireBaseRepo.I.login(userData, new ServerResponse<Boolean>() {
                     @Override
                     public void onSuccess(Boolean body) {
                         if (body) {
+                            SessionData.getInstance().userData = userData;
                             go.to(LoginActivity.this, HomeActivity.class);
                             finish();
                         }

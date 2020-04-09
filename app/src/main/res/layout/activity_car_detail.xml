@@ -16,8 +16,13 @@
         <ImageView
             android:id="@+id/iv_car_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/electric" />
+            android:layout_height="200dp" />
+
+        <Button
+            android:id="@+id/btn_add_to_wish_list"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/add_to_wishlist" />
 
         <TextView
             android:id="@+id/tv_car_name"

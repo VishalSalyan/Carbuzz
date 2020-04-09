@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 public class UserData {
     private String name = null;
-    private String userName = null;
     private String email = null;
     private String phoneNumber = null;
     private String gender = null;
     private String password = null;
-    private ArrayList<String> favouriteCars = new ArrayList<>();
+    private ArrayList<WishListData> favouriteCars = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -17,14 +16,6 @@ public class UserData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getEmail() {
@@ -59,11 +50,11 @@ public class UserData {
         this.password = password;
     }
 
-    public ArrayList<String> getFavouriteCars() {
+    public ArrayList<WishListData> getFavouriteCars() {
         return favouriteCars;
     }
 
-    public void setFavouriteCars(ArrayList<String> favouriteCars) {
+    public void setFavouriteCars(ArrayList<WishListData> favouriteCars) {
         this.favouriteCars = favouriteCars;
     }
 }

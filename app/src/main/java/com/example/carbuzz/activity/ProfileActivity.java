@@ -17,7 +17,7 @@ import static com.example.carbuzz.utils.Toasts.show;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText etPhoneNumber, etUserName, etEmail, etFullName;
+    private EditText etPhoneNumber, etEmail, etFullName;
     private Button btnUpdate;
     private RadioButton rbFemale, rbMale;
     private String gender = null;
@@ -28,7 +28,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         etEmail = findViewById(R.id.et_email);
-        etUserName = findViewById(R.id.et_username);
         etFullName = findViewById(R.id.et_full_name);
         etPhoneNumber = findViewById(R.id.et_phone_number);
         rbFemale = findViewById(R.id.rb_female);
@@ -42,12 +41,10 @@ public class ProfileActivity extends AppCompatActivity {
                     return;
                 }
                 String email = etEmail.getText().toString().trim();
-                String userName = etUserName.getText().toString().trim();
                 String fullName = etFullName.getText().toString().trim();
                 String phoneNumber = etPhoneNumber.getText().toString().trim();
                 UserData userData = new UserData();
                 userData.setEmail(email);
-                userData.setUserName(userName);
                 userData.setName(fullName);
                 userData.setPhoneNumber(phoneNumber);
                 userData.setGender(gender);
@@ -72,10 +69,6 @@ public class ProfileActivity extends AppCompatActivity {
         if (etEmail.getText().toString().trim().isEmpty()) {
             isValid = false;
             etEmail.setError("Please fill this field");
-        }
-        if (etUserName.getText().toString().trim().isEmpty()) {
-            isValid = false;
-            etUserName.setError("Please fill this field");
         }
         if (etFullName.getText().toString().trim().isEmpty()) {
             isValid = false;

@@ -1,12 +1,13 @@
 package com.example.carbuzz.firebaseRepo;
 
-import android.content.Context;
-import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.carbuzz.data.CarData;
 import com.example.carbuzz.data.UserData;
+import com.example.carbuzz.data.WishListData;
+import com.example.carbuzz.utils.Constants;
 import com.example.carbuzz.utils.SessionData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,10 +27,10 @@ public class FireBaseRepo {
     }
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference userRef = database.getReference("user");
-    private DatabaseReference exploreCarRef = database.getReference("explore_car");
-    private DatabaseReference newCarRef = database.getReference("new_car");
-    private DatabaseReference carCollectionRef = database.getReference("car_collection");
+    private DatabaseReference userRef = database.getReference(Constants.USER);
+    private DatabaseReference exploreCarRef = database.getReference(Constants.EXPLORE_CAR);
+    private DatabaseReference newCarRef = database.getReference(Constants.NEW_CAR);
+    private DatabaseReference carCollectionRef = database.getReference(Constants.CAR_COLLECTION);
 
     public void signUp(final UserData userData, final ServerResponse<Boolean> serverResponse) {
         userRef.push().setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -45,17 +46,23 @@ public class FireBaseRepo {
         });
     }
 
-    public void login(final UserData userData, final ServerResponse<Boolean> serverResponse) {
-        userRef.addValueEventListener(new ValueEventListener() {
+    public void login(final String email, final String password, final ServerResponse<UserData> serverResponse) {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserData user = snapshot.getValue(UserData.class);
-                    assert user != null;
-                    if (user.getName().equals(userData.getName()) && user.getPassword().equals(userData.getPassword())) {
-                        serverResponse.onSuccess(true);
+                    Log.d("TAG", user.toString());
+                    Log.d("TAG_EMAIL_F", user.getEmail());
+                    Log.d("TAG_EMAIL", email);
+                    Log.d("TAG_PASSWORD_F", user.getPassword());
+                    Log.d("TAG_PASSWORD", password);
+//                    for (int i = 0; i < user.userData.size(); i++) {
+                    if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                        serverResponse.onSuccess(user);
                         break;
                     }
+//                    }
                 }
             }
 
@@ -160,7 +167,7 @@ public class FireBaseRepo {
 
     public void getCarDetails(final String id, String mode, final ServerResponse<CarData> serverResponse) {
         switch (mode) {
-            case "Collection":
+            case Constants.CAR_COLLECTION:
                 carCollectionRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -180,7 +187,7 @@ public class FireBaseRepo {
                     }
                 });
                 break;
-            case "explore_car":
+            case Constants.EXPLORE_CAR:
                 exploreCarRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -200,7 +207,7 @@ public class FireBaseRepo {
                     }
                 });
                 break;
-            case "new_car":
+            case Constants.NEW_CAR:
                 newCarRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -274,12 +281,13 @@ public class FireBaseRepo {
         });
     }
 
-    public void favouriteCars(final String email, final ServerResponse<ArrayList<String>> serverResponse) {
-        userRef.addValueEventListener(new ValueEventListener() {
+    public void wishListCars(final String email, final ServerResponse<ArrayList<WishListData>> serverResponse) {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserData userData = snapshot.getValue(UserData.class);
+                    assert userData != null;
                     if (userData.getEmail().equals(email)) {
                         serverResponse.onSuccess(userData.getFavouriteCars());
                     }
@@ -292,4 +300,35 @@ public class FireBaseRepo {
             }
         });
     }
+
+    public void setWishListCars(final String email, final String carId, final String carMode, final ServerResponse<String> serverResponse) {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserData userData = snapshot.getValue(UserData.class);
+                    assert userData != null;
+                    if (userData.getEmail().equals(email)) {
+                        String key = snapshot.getKey();
+                        assert key != null;
+
+                        ArrayList<WishListData> carWishList = new ArrayList<>();
+                        WishListData wishListData = new WishListData();
+                        wishListData.setCarId(carId);
+                        wishListData.setMode(carMode);
+                        carWishList.add(wishListData);
+                        SessionData.getInstance().getLocalData().getFavouriteCars().addAll(carWishList);
+                        userRef.child(key).child("favouriteCars").setValue(SessionData.getInstance().getLocalData().getFavouriteCars());
+                        serverResponse.onSuccess("Added to WishList Successfully");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
 }

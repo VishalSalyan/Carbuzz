@@ -36,21 +36,23 @@ public class CollectionFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_collection, container, false);
         mRecyclerView = view.findViewById(R.id.collection_recycler_view);
-
         initializeAdapter();
-        fetchCarList();
-        CarData carData = new CarData();
-        carData.setCarName("Electric");
-        carList.add(carData);
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchCarList();
     }
 
     private void fetchCarList() {
         FireBaseRepo.I.fetchCollection(new ServerResponse<ArrayList<CarData>>() {
             @Override
             public void onSuccess(ArrayList<CarData> body) {
-
+                carList.clear();
+                carList.addAll(body);
+                collectionAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -61,7 +63,7 @@ public class CollectionFragment extends Fragment {
     }
 
     private void initializeAdapter() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         collectionAdapter = new CollectionCarAdapter(getActivity(), carList);
         mRecyclerView.setAdapter(collectionAdapter);

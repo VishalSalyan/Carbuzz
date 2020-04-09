@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.carbuzz.firebaseRepo.FireBaseRepo;
@@ -16,8 +17,10 @@ import com.example.carbuzz.fragment.CollectionFragment;
 import com.example.carbuzz.fragment.HomeFragment;
 import com.example.carbuzz.R;
 import com.example.carbuzz.fragment.SearchFragment;
+import com.example.carbuzz.utils.SessionData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import static com.example.carbuzz.utils.GoTo.go;
 import static com.example.carbuzz.utils.Toasts.show;
 
 public class HomeActivity extends AppCompatActivity {
@@ -44,8 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         FireBaseRepo.I.searchCar(new ServerResponse<String>() {
             @Override
             public void onSuccess(String body) {
-                SearchFragment searchFragment = new SearchFragment();
-                searchFragment.notifySearchList();
+
             }
 
             @Override
@@ -94,4 +96,23 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem itemLogOut = menu.findItem(R.id.menu_log_out);
+        itemLogOut.setVisible(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_log_out) {
+            SessionData.getInstance().saveLogin(false);
+            SessionData.getInstance().clearSessionData();
+            go.to(HomeActivity.this, LoginActivity.class);
+            return (true);
+        }
+        return (super.onOptionsItemSelected(item));
+    }
 }

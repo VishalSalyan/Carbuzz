@@ -17,6 +17,7 @@ public class CarData {
     private String ownerEmail = "";
     private String ownerAddress = "";
     private String carImage = "";
+    private String mode = "";
 
     public String getId() {
         return id;
@@ -144,5 +145,13 @@ public class CarData {
 
     public void setCarImage(String carImage) {
         this.carImage = carImage;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 }

@@ -45,7 +45,7 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        MaterialSearchView searchView = view.findViewById(R.id.search_bar);
+        MaterialSearchView searchView = view.findViewById(R.id.search_view);
         recyclerView = view.findViewById(R.id.recycler_view);
         initializeAdapter();
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -70,10 +70,6 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         searchAdapter = new SearchAdapter(getActivity(), SessionData.getInstance().totalCarList);
         recyclerView.setAdapter(searchAdapter);
-    }
-
-    public void notifySearchList() {
-        searchAdapter.notifyDataSetChanged();
     }
 
     private void filter(String text) {

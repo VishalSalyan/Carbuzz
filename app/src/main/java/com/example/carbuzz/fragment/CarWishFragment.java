@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.carbuzz.R;
-import com.example.carbuzz.adapters.WishlistCarAdapter;
+import com.example.carbuzz.adapters.WishListCarAdapter;
 import com.example.carbuzz.data.CarData;
+import com.example.carbuzz.data.WishListData;
 import com.example.carbuzz.firebaseRepo.FireBaseRepo;
 import com.example.carbuzz.firebaseRepo.ServerResponse;
 import com.example.carbuzz.utils.SessionData;
@@ -25,7 +26,7 @@ import static com.example.carbuzz.utils.Toasts.show;
 public class CarWishFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private WishlistCarAdapter wishlistCarAdapter;
+    private WishListCarAdapter wishlistCarAdapter;
     private ArrayList<CarData> carList = new ArrayList<>();
 
     public CarWishFragment() {
@@ -52,13 +53,13 @@ public class CarWishFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        FireBaseRepo.I.favouriteCars(SessionData.getInstance().userData.getEmail(), new ServerResponse<ArrayList<String>>() {
+        FireBaseRepo.I.wishListCars(SessionData.getInstance().getLocalData().getEmail(), new ServerResponse<ArrayList<WishListData>>() {
             @Override
-            public void onSuccess(ArrayList<String> body) {
+            public void onSuccess(ArrayList<WishListData> body) {
                 carList.clear();
-                for (String item : body) {
+                for (WishListData item : body) {
                     for (int i = 0; i < SessionData.getInstance().totalCarList.size(); i++) {
-                        if (item.equals(SessionData.getInstance().totalCarList.get(i).getId())) {
+                        if (item.getCarId().equals(SessionData.getInstance().totalCarList.get(i).getId())) {
                             carList.add(SessionData.getInstance().totalCarList.get(i));
                             break;
                         }
@@ -77,7 +78,7 @@ public class CarWishFragment extends Fragment {
     private void initializeAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        wishlistCarAdapter = new WishlistCarAdapter(getActivity(), carList);
+        wishlistCarAdapter = new WishListCarAdapter(getActivity(), carList);
         recyclerView.setAdapter(wishlistCarAdapter);
     }
 

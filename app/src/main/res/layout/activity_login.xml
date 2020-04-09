@@ -42,14 +42,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:hint="E-mail" />
+            android:inputType="textEmailAddress"
+            android:hint="@string/e_mail" />
 
         <EditText
             android:id="@+id/et_password"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Password" />
+            android:inputType="textPassword"
+            android:hint="@string/password" />
 
         <Button
             android:id="@+id/btn_update"
@@ -58,7 +60,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:background="@color/textColor"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@color/whitecolor" />
 
         <TextView
@@ -66,28 +68,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="If you don't have an account?Click Below"
+            android:text="@string/if_you_don_t_have_an_account"
             android:textColor="@color/textGreyColor"
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/btn_googleLogin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@color/textColor"
-            android:text="Google Login"
-            android:textColor="@color/whitecolor" />
-
-        <Button
-            android:id="@+id/btn_signup"
+            android:id="@+id/btn_sign_up"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@color/whitecolor"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textColor="@color/textColor" />
 
     </LinearLayout>

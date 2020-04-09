@@ -76,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
     // Id of Btn and EditText
     private void initViews() {
         etEmail = findViewById(R.id.et_email);
-        etUserName = findViewById(R.id.et_username);
+        etUserName = findViewById(R.id.et_name);
         etPhoneNumber = findViewById(R.id.et_phone_number);
         etPassword = findViewById(R.id.et_password);
         etConfirmPassword = findViewById(R.id.et_Confirmpassword);

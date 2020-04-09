@@ -21,12 +21,19 @@ import static com.example.carbuzz.utils.Toasts.show;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
-    private Button btnLogin, btnSignUp, btnGoogleLogin;
+    private Button btnLogin, btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SessionData.getInstance().initSharedPref(LoginActivity.this);
+
+        if (SessionData.getInstance().isLogin()) {
+            go.to(LoginActivity.this, HomeActivity.class);
+            finish();
+        }
+
         initViews();
         login();
     }
@@ -42,14 +49,13 @@ public class LoginActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
-                final UserData userData = new UserData();
-                userData.setName(email);
-                userData.setPassword(password);
-                FireBaseRepo.I.login(userData, new ServerResponse<Boolean>() {
+                FireBaseRepo.I.login(email, password, new ServerResponse<UserData>() {
                     @Override
-                    public void onSuccess(Boolean body) {
-                        if (body) {
-                            SessionData.getInstance().userData = userData;
+                    public void onSuccess(UserData body) {
+                        if (body != null) {
+//                            SessionData.getInstance().userData = body;
+                            SessionData.getInstance().saveLocalData(body);
+                            SessionData.getInstance().saveLogin(true);
                             go.to(LoginActivity.this, HomeActivity.class);
                             finish();
                         }
@@ -86,9 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
 
         btnLogin = findViewById(R.id.btn_update);
-        btnSignUp = findViewById(R.id.btn_signup);
-        btnGoogleLogin = findViewById(R.id.btn_googleLogin);
-
+        btnSignUp = findViewById(R.id.btn_sign_up);
 
         //OnClick for Buttons
 
@@ -102,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                go.to(LoginActivity.this, SignUpActivity.class);
             }
         });
 

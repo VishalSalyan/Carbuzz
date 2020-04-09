@@ -26,4 +26,8 @@
     <string name="model">Model</string>
     <string name="owner_details">Owner Details</string>
     <string name="search">Search</string>
+    <string name="if_you_don_t_have_an_account">If you don\'t have an account?</string>
+    <string name="add_to_wishlist">Add to WishList</string>
+    <string name="name">Name</string>
+    <string name="log_out">Log Out</string>
 </resources>

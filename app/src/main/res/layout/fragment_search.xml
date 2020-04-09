@@ -8,9 +8,10 @@
 
     <com.miguelcatalan.materialsearchview.MaterialSearchView
         android:id="@+id/search_view"
-        android:layout_width="match_parent"
         style="@style/MaterialSearchViewStyle"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="56dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

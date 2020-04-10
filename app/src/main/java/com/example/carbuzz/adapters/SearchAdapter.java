@@ -2,6 +2,7 @@ package com.example.carbuzz.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbuzz.R;
+import com.example.carbuzz.activity.CarDetailActivity;
 import com.example.carbuzz.data.CarData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static com.example.carbuzz.utils.GoTo.go;
 
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
@@ -26,10 +30,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     // data is passed into the constructor
     public SearchAdapter(Context context, ArrayList<CarData> carList) {
-
         this.context = context;
         this.carList = carList;
-
     }
 
     // inflates the row layout from xml when needed
@@ -44,19 +46,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-//        final CarData carData = carList.get(position);
+        final CarData carData = carList.get(position);
 
-        holder.name.setText("Electric"/*carData.getCarName()*/);
+        holder.name.setText(carData.getCarName());
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, CarDetailActivity.class);
+                intent.putExtra("carId", carData.getId());
+                intent.putExtra("mode", carData.getMode());
+                context.startActivity(intent);
             }
         });
 
-//        Picasso.get().load(user.getCarImage()).into(holder.carImage);
-        Picasso.get().load(R.drawable.electric).into(holder.carImage);
-
+        Picasso.get().load(carData.getCarImage()).into(holder.carImage);
     }
 
     // total number of rows
@@ -68,8 +71,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return carList.size();
     }
 
-    public void filterList(ArrayList<CarData> filteredList) {
-        carList = filteredList;
+    public void filterList(ArrayList<CarData> filterList) {
+        carList = filterList;
         notifyDataSetChanged();
     }
 
@@ -87,6 +90,4 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
 
     }
-
-
 }

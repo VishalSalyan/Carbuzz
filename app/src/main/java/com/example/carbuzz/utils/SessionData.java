@@ -23,9 +23,11 @@ public class SessionData {
     private SessionData() {
     }
 
+
     private Gson gson = new Gson();
     private String data = null;
     public ArrayList<CarData> totalCarList = new ArrayList<>();
+    public ArrayList<CarData> filteredList = new ArrayList<>();
     public UserData userData;
 
     public void initSharedPref(Context context) {

@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.carbuzz.data.CarData;
+import com.example.carbuzz.data.FaqData;
 import com.example.carbuzz.data.UserData;
 import com.example.carbuzz.data.WishListData;
 import com.example.carbuzz.utils.Constants;
@@ -32,11 +33,13 @@ public class FireBaseRepo {
     private FireBaseRepo() {
     }
 
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference userRef = database.getReference(Constants.USER);
     private DatabaseReference exploreCarRef = database.getReference(Constants.EXPLORE_CAR);
     private DatabaseReference newCarRef = database.getReference(Constants.NEW_CAR);
     private DatabaseReference carCollectionRef = database.getReference(Constants.CAR_COLLECTION);
+    private DatabaseReference faqRef = database.getReference(Constants.FAQ);
 
     //File Storage
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -427,6 +430,25 @@ public class FireBaseRepo {
                         serverResponse.onSuccess(userData);
                     }
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void fetchFaq(final ServerResponse<ArrayList<FaqData>> serverResponse) {
+        faqRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<FaqData> faqList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    FaqData faqData = snapshot.getValue(FaqData.class);
+                    faqList.add(faqData);
+                }
+                serverResponse.onSuccess(faqList);
             }
 
             @Override

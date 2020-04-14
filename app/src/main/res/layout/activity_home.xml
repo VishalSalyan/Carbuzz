@@ -29,7 +29,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
-        app:itemIconTint="@color/whitecolor"
-        app:itemTextColor="@color/whitecolor"
+        app:itemIconTint="@color/whiteColor"
+        app:itemTextColor="@color/whiteColor"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

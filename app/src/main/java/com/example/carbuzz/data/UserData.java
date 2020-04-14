@@ -6,6 +6,7 @@ public class UserData {
     private String name = null;
     private String email = null;
     private String phoneNumber = null;
+    private String userImage = null;
     private String gender = null;
     private String password = null;
     private ArrayList<WishListData> favouriteCars = new ArrayList<>();
@@ -32,6 +33,14 @@ public class UserData {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 
     public String getGender() {

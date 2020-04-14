@@ -2,17 +2,19 @@ package com.example.carbuzz.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-import com.example.carbuzz.adapters.SearchAdapter;
+import com.brouding.simpledialog.SimpleDialog;
 import com.example.carbuzz.data.CarData;
 import com.example.carbuzz.firebaseRepo.FireBaseRepo;
 import com.example.carbuzz.firebaseRepo.ServerResponse;
@@ -24,8 +26,6 @@ import com.example.carbuzz.fragment.SearchFragment;
 import com.example.carbuzz.utils.SessionData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
-import java.util.ArrayList;
 
 import static com.example.carbuzz.utils.GoTo.go;
 import static com.example.carbuzz.utils.Toasts.show;
@@ -114,11 +114,10 @@ public class HomeActivity extends AppCompatActivity {
                             openFragment(carWishFragment);
                             show.shortMsg(HomeActivity.this, "WishList");
                             break;
-                        case R.id.bottom_search:
-                            itemSearch.setVisible(true);
-                            searchFragment = new SearchFragment();
-                            openFragment(searchFragment);
-                            show.shortMsg(HomeActivity.this, "Search");
+                        case R.id.bottom_more:
+                            popupMenuExample();
+
+
                             break;
                     }
                     return true;
@@ -137,22 +136,62 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem itemLogOut = menu.findItem(R.id.menu_log_out);
         itemSearch = menu.findItem(R.id.action_search);
         searchView.setMenuItem(itemSearch);
         itemSearch.setVisible(false);
-        itemLogOut.setVisible(true);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_log_out) {
-            SessionData.getInstance().saveLogin(false);
-            SessionData.getInstance().clearSessionData();
-            go.to(HomeActivity.this, LoginActivity.class);
-            return (true);
-        }
         return (super.onOptionsItemSelected(item));
     }
+
+    private void popupMenuExample() {
+        PopupMenu p = new PopupMenu(HomeActivity.this, findViewById(R.id.bottom_more));
+        p.getMenuInflater().inflate(R.menu.popup_menu, p.getMenu());
+        p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.popup_profile:
+                        go.to(HomeActivity.this, ProfileActivity.class);
+                        break;
+                    case R.id.popup_help:
+                        break;
+                    case R.id.popup_search:
+                        itemSearch.setVisible(true);
+                        searchFragment = new SearchFragment();
+                        openFragment(searchFragment);
+                        break;
+                    case R.id.popup_log_out:
+                        showLogOutDialog();
+
+                        break;
+                }
+                return true;
+            }
+        });
+        p.show();
+    }
+
+    private void showLogOutDialog() {
+        new SimpleDialog.Builder(HomeActivity.this)
+                .setTitle("Log Out")
+                .setContent("Are you Sure ?")
+                .setBtnConfirmText("Log Out")
+                .setBtnCancelText("Cancel")
+                .setCancelable(true)
+                .onConfirm(new SimpleDialog.BtnCallback() {
+                    @Override
+                    public void onClick(@NonNull SimpleDialog dialog, @NonNull SimpleDialog.BtnAction which) {
+                        SessionData.getInstance().saveLogin(false);
+                        SessionData.getInstance().clearSessionData();
+                        go.to(HomeActivity.this, LoginActivity.class);
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+    }
+
 }

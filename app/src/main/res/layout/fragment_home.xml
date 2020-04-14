@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/explore"
-            android:textColor="@color/blackcolor"
+            android:textColor="@color/blackColor"
             android:textFontWeight="2"
             android:textSize="20sp" />
 
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/new_car_collection"
-            android:textColor="@color/blackcolor"
+            android:textColor="@color/blackColor"
             android:textFontWeight="2"
             android:textSize="20sp" />
 

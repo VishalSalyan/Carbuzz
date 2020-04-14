@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UserData body) {
                         if (body != null) {
-//                            SessionData.getInstance().userData = body;
                             SessionData.getInstance().saveLocalData(body);
                             SessionData.getInstance().saveLogin(true);
                             go.to(LoginActivity.this, HomeActivity.class);

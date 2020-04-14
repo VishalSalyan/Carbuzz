@@ -1,8 +1,12 @@
 package com.example.carbuzz.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,14 +14,19 @@ import android.widget.TextView;
 
 import com.example.carbuzz.R;
 import com.example.carbuzz.data.CarData;
+import com.example.carbuzz.data.UserData;
 import com.example.carbuzz.firebaseRepo.FireBaseRepo;
 import com.example.carbuzz.firebaseRepo.ServerResponse;
 import com.example.carbuzz.utils.Constants;
 import com.example.carbuzz.utils.SessionData;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.carbuzz.utils.GoTo.go;
 import static com.example.carbuzz.utils.Toasts.show;
 
 public class CarDetailActivity extends AppCompatActivity {
@@ -30,12 +39,17 @@ public class CarDetailActivity extends AppCompatActivity {
 
     private String id;
     private String mode;
-    private boolean isAddToWishList = false;
+    private boolean isDeleteMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_detail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Car Details");
+
         initViews();
     }
 
@@ -51,13 +65,15 @@ public class CarDetailActivity extends AppCompatActivity {
     }
 
     private void checkWishList() {
-        if (!SessionData.getInstance().getLocalData().getFavouriteCars().isEmpty()) {
-            for (int i = 0; i < SessionData.getInstance().getLocalData().getFavouriteCars().size(); i++) {
-                if (id.equals(SessionData.getInstance().getLocalData().getFavouriteCars().get(i).getCarId())) {
-                    addToWishList.setVisibility(View.GONE);
+        if (SessionData.getInstance().getLocalData() != null)
+            if (SessionData.getInstance().getLocalData().getFavouriteCars() != null || SessionData.getInstance().getLocalData().getFavouriteCars().size() != 0) {
+                for (int i = 0; i < SessionData.getInstance().getLocalData().getFavouriteCars().size(); i++) {
+                    if (id.equals(SessionData.getInstance().getLocalData().getFavouriteCars().get(i).getCarId())) {
+                        isDeleteMode = true;
+                        addToWishList.setText(getResources().getString(R.string.remove_from_wish_list));
+                    }
                 }
             }
-        }
     }
 
     private void fetchCarDetails() {
@@ -113,10 +129,15 @@ public class CarDetailActivity extends AppCompatActivity {
         addToWishList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FireBaseRepo.I.setWishListCars(SessionData.getInstance().getLocalData().getEmail(), id, mode, new ServerResponse<String>() {
+                FireBaseRepo.I.setWishListCars(isDeleteMode, SessionData.getInstance().getLocalData().getEmail(), id, mode, new ServerResponse<String>() {
                     @Override
                     public void onSuccess(String body) {
-                        show.longMsg(CarDetailActivity.this, body);
+                        if (isDeleteMode) {
+                            isDeleteMode = false;
+                            addToWishList.setText(getResources().getString(R.string.add_to_wishlist));
+                        } else {
+                            show.longMsg(CarDetailActivity.this, "Added successfully to WishList");
+                        }
                         checkWishList();
                     }
 
@@ -127,5 +148,23 @@ public class CarDetailActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+//            go.to(CarDetailActivity.this, HomeActivity.class);
+            return (true);
+        }
+        return (super.onOptionsItemSelected(item));
     }
 }

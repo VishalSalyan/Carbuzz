@@ -85,7 +85,7 @@
             android:layout_marginTop="40dp"
             android:background="@color/textColor"
             android:text="@string/sign_up"
-            android:textColor="@color/whitecolor" />
+            android:textColor="@color/whiteColor" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:background="@color/whitecolor"
+            android:background="@color/whiteColor"
             android:text="@string/login"
             android:textColor="@color/textColor" />
 

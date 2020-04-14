@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file carName.
 #-renamesourcefileattribute SourceFile
+-keep class com.example.carbuzz.activity.**
+-keep class com.example.carbuzz.firebaseRepo.**
+-keep class com.example.carbuzz.fragment.**
+-keep class com.example.carbuzz.utils.**
+-keep class com.example.carbuzz.adapters.**

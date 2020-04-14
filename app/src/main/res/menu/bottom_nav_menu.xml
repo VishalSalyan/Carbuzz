@@ -3,26 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/bottom_home"
-        android:enabled="true"
         android:icon="@drawable/home"
-        android:title="Home"
+        android:title="@string/home"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/bottom_category"
-        android:enabled="true"
         android:icon="@drawable/category"
-        android:title="Collection"
+        android:title="@string/collection"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/bottom_favorites"
-        android:enabled="true"
         android:icon="@drawable/favourite"
-        android:title="Search"
+        android:title="@string/favourites"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/bottom_search"
-        android:enabled="true"
-        android:icon="@drawable/search"
-        android:title="Search"
+        android:id="@+id/bottom_more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more"
         app:showAsAction="ifRoom" />
 </menu>

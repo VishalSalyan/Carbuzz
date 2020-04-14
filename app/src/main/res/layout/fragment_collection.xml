@@ -13,7 +13,7 @@
         android:text="New Car Collection"
         android:textSize="20dp"
         android:textFontWeight="2"
-        android:textColor="@color/blackcolor"/>
+       android:textColor="@color/blackColor" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/collection_recycler_view"

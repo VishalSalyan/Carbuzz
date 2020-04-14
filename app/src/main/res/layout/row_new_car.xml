@@ -48,7 +48,7 @@
                         android:text="New Car   "
                         android:textAllCaps="true"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                        android:textColor="@color/blackcolor"
+                        android:textColor="@color/blackColor"
                         android:textStyle="bold" />
 
                     <TextView

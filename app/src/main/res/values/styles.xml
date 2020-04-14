@@ -6,7 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item>
+        <item name="titleTextColor">@color/whiteColor</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white</item>
+
+        <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
 
     </style>
@@ -31,7 +34,7 @@
         <item name="searchSuggestionBackground">@android:color/white</item>
 
         <!-- Change text color for edit text. This will also be the color of the cursor -->
-        <item name="android:textColor">@color/blackcolor</item>
+        <item name="android:textColor">@color/blackColor</item>
 
         <!-- Change hint text color for edit text -->
         <item name="android:textColorHint">@color/textGreyColor</item>

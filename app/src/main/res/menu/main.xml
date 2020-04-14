@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_log_out"
-        android:icon="@drawable/ic_log_out"
-        android:title="@string/log_out"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_action_search"
         android:orderInCategory="100"

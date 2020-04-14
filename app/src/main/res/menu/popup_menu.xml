@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/popup_profile"
+        android:title="@string/profile" />
+    <item
+        android:id="@+id/popup_help"
+        android:title="@string/help" />
+    <item
+        android:id="@+id/popup_search"
+        android:title="@string/search" />
+    <item
+        android:id="@+id/popup_log_out"
+        android:title="@string/log_out" />
+</menu>

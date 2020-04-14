@@ -15,13 +15,13 @@ public class SessionData {
     private SharedPreferences.Editor editor;
 
     private static final SessionData ourInstance = new SessionData();
-
     public static SessionData getInstance() {
         return ourInstance;
     }
 
     private SessionData() {
     }
+
 
 
     private Gson gson = new Gson();
@@ -32,17 +32,18 @@ public class SessionData {
 
     public void initSharedPref(Context context) {
         sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
     }
 
     public void saveLogin(boolean isLogin) {
-        editor = sharedpreferences.edit();
         editor.putBoolean("key", isLogin);
-        editor.putString("data", data);
         editor.apply();
     }
 
     public void saveLocalData(UserData userData) {
         data = gson.toJson(userData);
+        editor.putString("data", data);
+        editor.apply();
     }
 
     public UserData getLocalData() {

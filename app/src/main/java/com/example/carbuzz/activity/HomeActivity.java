@@ -157,6 +157,7 @@ public class HomeActivity extends AppCompatActivity {
                         go.to(HomeActivity.this, ProfileActivity.class);
                         break;
                     case R.id.popup_help:
+                        go.to(HomeActivity.this, FaqActivity.class);
                         break;
                     case R.id.popup_search:
                         itemSearch.setVisible(true);

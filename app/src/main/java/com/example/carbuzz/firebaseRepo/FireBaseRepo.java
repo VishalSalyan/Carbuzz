@@ -341,34 +341,38 @@ public class FireBaseRepo {
                                 }
                             });
                         } else {
-                            userRef./*child(key).child("favouriteCars").orderByChild("carId").equalTo(carId).*/addListenerForSingleValueEvent(new ValueEventListener() {
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    ArrayList<WishListData> wishList = new ArrayList<>();
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                         UserData userData1 = snapshot.getValue(UserData.class);
                                         assert userData1 != null;
-                                        ArrayList<WishListData> wishList = new ArrayList<>();
                                         for (int i = 0; i < userData1.getFavouriteCars().size(); i++) {
                                             if (!userData1.getFavouriteCars().get(i).getCarId().equals(carId)) {
                                                 wishList.add(userData1.getFavouriteCars().get(i));
                                             }
                                         }
-                                        userRef.child(key).child("favouriteCars").setValue(null);
-                                        userRef.child(key).child("favouriteCars").setValue(wishList);
-
-                                        getUserData(email, new ServerResponse<UserData>() {
-                                            @Override
-                                            public void onSuccess(UserData body) {
-                                                userRef.child(key).child("favouriteCars").setValue(body.getFavouriteCars());
-                                                serverResponse.onSuccess(email);
-                                            }
-
-                                            @Override
-                                            public void onFailure(Throwable error) {
-
-                                            }
-                                        });
                                     }
+                                    final ArrayList<WishListData> finalWishList = new ArrayList<>(wishList);
+                                    userRef.child(key).child("favouriteCars").setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            userRef.child(key).child("favouriteCars").setValue(finalWishList);
+                                            getUserData(email, new ServerResponse<UserData>() {
+                                                @Override
+                                                public void onSuccess(UserData body) {
+                                                    userRef.child(key).child("favouriteCars").setValue(body.getFavouriteCars());
+                                                    serverResponse.onSuccess(email);
+                                                }
+
+                                                @Override
+                                                public void onFailure(Throwable error) {
+
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
 
                                 @Override

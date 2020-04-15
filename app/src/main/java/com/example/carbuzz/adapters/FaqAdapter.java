@@ -40,18 +40,29 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_collection, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_faq, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        final FaqData faqData = faqList.get(position);
+        FaqData faqData = faqList.get(position);
 
         holder.question.setText(faqData.getQuestion());
         holder.answer.setText(faqData.getAnswer());
+
+        holder.cvCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.answer.getVisibility() == View.GONE) {
+                    holder.answer.setVisibility(View.VISIBLE);
+                } else {
+                    holder.answer.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     // total number of rows
@@ -68,11 +79,13 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView question;
         private TextView answer;
+        private CardView cvCollection;
 
         ViewHolder(View itemView) {
             super(itemView);
             question = itemView.findViewById(R.id.tv_question);
             answer = itemView.findViewById(R.id.tv_answer);
+            cvCollection = itemView.findViewById(R.id.cv_collection);
         }
 
     }

@@ -6,9 +6,9 @@
     android:layout_margin="5dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv_collection1"
+        android:id="@+id/cv_collection"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_grey_border"
         android:padding="5dp"
         app:cardElevation="5dp"
@@ -30,6 +30,8 @@
                 android:textAllCaps="true"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/blackColor"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -39,8 +41,8 @@
                 android:text="Answer"
                 android:textAllCaps="true"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="@color/blackColor"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
 

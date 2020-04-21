@@ -450,7 +450,7 @@ public class FireBaseRepo {
     }
 
     public void fetchFaq(final ServerResponse<ArrayList<FaqData>> serverResponse) {
-        faqRef.addValueEventListener(new ValueEventListener() {
+        faqRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<FaqData> faqList = new ArrayList<>();

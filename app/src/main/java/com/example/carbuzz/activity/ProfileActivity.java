@@ -75,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
                         userData.setGender(gender);
                         userData.setUserImage(body);
                         userData.setPassword(SessionData.getInstance().getLocalData().getPassword());
-
+                        userData.setFavouriteCars(SessionData.getInstance().getLocalData().getFavouriteCars());
                         SessionData.getInstance().saveLocalData(userData);
                         FireBaseRepo.I.setProfile(userData, new ServerResponse<String>() {
                             @Override
@@ -122,6 +122,10 @@ public class ProfileActivity extends AppCompatActivity {
         if (etPhoneNumber.getText().toString().trim().isEmpty()) {
             isValid = false;
             etPhoneNumber.setError("Please fill this field");
+        }
+        if (imageUri == null) {
+            isValid = false;
+            show.longMsg(ProfileActivity.this, "Please Select image");
         }
         if (rbMale.isChecked()) {
             gender = "Male";

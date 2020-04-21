@@ -71,15 +71,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isValidate() {
         boolean isValid = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            if (etEmail.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etEmail.setError("Please fill this field");
-            }
-            if (etPassword.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etPassword.setError("Please fill this field");
-            }
+        if (etEmail.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etEmail.setError("Please fill this field");
+        }
+        if (etPassword.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etPassword.setError("Please fill this field");
         }
 
         return isValid;
@@ -92,15 +90,6 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btn_update);
         btnSignUp = findViewById(R.id.btn_sign_up);
-
-        //OnClick for Buttons
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

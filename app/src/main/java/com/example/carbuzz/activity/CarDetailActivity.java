@@ -1,6 +1,5 @@
 package com.example.carbuzz.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -14,19 +13,14 @@ import android.widget.TextView;
 
 import com.example.carbuzz.R;
 import com.example.carbuzz.data.CarData;
-import com.example.carbuzz.data.UserData;
+import com.example.carbuzz.data.WishListData;
 import com.example.carbuzz.firebaseRepo.FireBaseRepo;
 import com.example.carbuzz.firebaseRepo.ServerResponse;
-import com.example.carbuzz.utils.Constants;
 import com.example.carbuzz.utils.SessionData;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.Map;
 
-import static com.example.carbuzz.utils.GoTo.go;
 import static com.example.carbuzz.utils.Toasts.show;
 
 public class CarDetailActivity extends AppCompatActivity {
@@ -67,11 +61,14 @@ public class CarDetailActivity extends AppCompatActivity {
     private void checkWishList() {
         if (SessionData.getInstance().getLocalData() != null)
             if (SessionData.getInstance().getLocalData().getFavouriteCars() != null || SessionData.getInstance().getLocalData().getFavouriteCars().size() != 0) {
-                for (int i = 0; i < SessionData.getInstance().getLocalData().getFavouriteCars().size(); i++) {
-                    if (id.equals(SessionData.getInstance().getLocalData().getFavouriteCars().get(i).getCarId())) {
+                for (Map.Entry me : SessionData.getInstance().getLocalData().getFavouriteCars().entrySet()) {
+                    WishListData wishListData = (WishListData) me.getValue();
+                    if (id.equals(wishListData.getCarId())) {
                         isDeleteMode = true;
                         addToWishList.setText(getResources().getString(R.string.remove_from_wish_list));
+                        break;
                     }
+
                 }
             }
     }
@@ -129,23 +126,37 @@ public class CarDetailActivity extends AppCompatActivity {
         addToWishList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FireBaseRepo.I.setWishListCars(isDeleteMode, SessionData.getInstance().getLocalData().getEmail(), id, mode, new ServerResponse<String>() {
-                    @Override
-                    public void onSuccess(String body) {
-                        if (isDeleteMode) {
+                if (isDeleteMode) {
+                    FireBaseRepo.I.removeWishListHouses(SessionData.getInstance().getLocalData().getEmail(), id, new ServerResponse<String>() {
+                        @Override
+                        public void onSuccess(String body) {
                             isDeleteMode = false;
                             addToWishList.setText(getResources().getString(R.string.add_to_wishlist));
-                        } else {
-                            show.longMsg(CarDetailActivity.this, "Added successfully to WishList");
+                            show.longMsg(CarDetailActivity.this, "Remove successfully from WishList");
+                            checkWishList();
                         }
-                        checkWishList();
-                    }
 
-                    @Override
-                    public void onFailure(Throwable error) {
+                        @Override
+                        public void onFailure(Throwable error) {
 
-                    }
-                });
+                        }
+                    });
+
+                } else {
+                    FireBaseRepo.I.setWishListCars(SessionData.getInstance().getLocalData().getEmail(), id, mode, new ServerResponse<String>() {
+                        @Override
+                        public void onSuccess(String body) {
+                            addToWishList.setText(getResources().getString(R.string.remove_from_wish_list));
+                            show.longMsg(CarDetailActivity.this, "Added successfully to WishList");
+                            checkWishList();
+                        }
+
+                        @Override
+                        public void onFailure(Throwable error) {
+
+                        }
+                    });
+                }
             }
         });
     }

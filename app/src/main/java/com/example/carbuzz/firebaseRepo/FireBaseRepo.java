@@ -26,9 +26,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FireBaseRepo {
     public static final FireBaseRepo I = new FireBaseRepo();
+    private String key;
 
     private FireBaseRepo() {
     }
@@ -291,7 +294,7 @@ public class FireBaseRepo {
         });
     }
 
-    public void wishListCars(final String email, final ServerResponse<ArrayList<WishListData>> serverResponse) {
+    public void wishListCars(final String email, final ServerResponse<HashMap<String, WishListData>> serverResponse) {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -311,76 +314,31 @@ public class FireBaseRepo {
         });
     }
 
-    public void setWishListCars(final boolean isDeleteMode, final String email, final String carId, final String carMode, final ServerResponse<String> serverResponse) {
+    public void setWishListCars(final String email, final String carId, final String carMode, final ServerResponse<String> serverResponse) {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    final UserData userData = snapshot.getValue(UserData.class);
+                    UserData userData = snapshot.getValue(UserData.class);
                     assert userData != null;
                     if (userData.getEmail().equals(email)) {
                         final String key = snapshot.getKey();
                         assert key != null;
 
-                        ArrayList<WishListData> carWishList = new ArrayList<>();
-                        if (!isDeleteMode) {
-                            WishListData wishListData = new WishListData();
-                            wishListData.setCarId(carId);
-                            wishListData.setMode(carMode);
-                            carWishList.add(wishListData);
-                            carWishList.addAll(SessionData.getInstance().getLocalData().getFavouriteCars());
-                            userRef.child(key).child("favouriteCars").setValue(carWishList);
-                            getUserData(email, new ServerResponse<UserData>() {
-                                @Override
-                                public void onSuccess(UserData body) {
-                                    serverResponse.onSuccess(email);
-                                }
+                        WishListData wishListData = new WishListData();
+                        wishListData.setCarId(carId);
+                        wishListData.setMode(carMode);
+                        userRef.child(key).child("favouriteCars").push().setValue(wishListData);
+                        getUserData(email, new ServerResponse<UserData>() {
+                            @Override
+                            public void onSuccess(UserData body) {
+                                serverResponse.onSuccess(email);
+                            }
 
-                                @Override
-                                public void onFailure(Throwable error) {
-                                }
-                            });
-                        } else {
-                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    ArrayList<WishListData> wishList = new ArrayList<>();
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        UserData userData1 = snapshot.getValue(UserData.class);
-                                        assert userData1 != null;
-                                        for (int i = 0; i < userData1.getFavouriteCars().size(); i++) {
-                                            if (!userData1.getFavouriteCars().get(i).getCarId().equals(carId)) {
-                                                wishList.add(userData1.getFavouriteCars().get(i));
-                                            }
-                                        }
-                                    }
-                                    final ArrayList<WishListData> finalWishList = new ArrayList<>(wishList);
-                                    userRef.child(key).child("favouriteCars").setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            userRef.child(key).child("favouriteCars").setValue(finalWishList);
-                                            getUserData(email, new ServerResponse<UserData>() {
-                                                @Override
-                                                public void onSuccess(UserData body) {
-                                                    userRef.child(key).child("favouriteCars").setValue(body.getFavouriteCars());
-                                                    serverResponse.onSuccess(email);
-                                                }
-
-                                                @Override
-                                                public void onFailure(Throwable error) {
-
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    serverResponse.onFailure(new Throwable(databaseError.toString()));
-                                }
-                            });
-                        }
+                            @Override
+                            public void onFailure(Throwable error) {
+                            }
+                        });
                     }
                 }
             }
@@ -392,6 +350,54 @@ public class FireBaseRepo {
         });
     }
 
+    public void removeWishListHouses(final String email, final String houseId, final ServerResponse<String> serverResponse) {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserData userData1 = snapshot.getValue(UserData.class);
+
+                    assert userData1 != null;
+                    //User Key
+                    if (userData1.getEmail().equals(email)) {
+                        key = snapshot.getKey();
+                    }
+
+                    //Wish List Iterator
+                    for (Map.Entry me : userData1.getFavouriteCars().entrySet()) {
+                        WishListData wishListData = (WishListData) me.getValue();
+                        if (houseId.equals(wishListData.getCarId())) {
+                            userRef.child(key).child("favouriteCars").child(String.valueOf(me.getKey()))
+                                    .getRef().removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            getUserData(email, new ServerResponse<UserData>() {
+                                                @Override
+                                                public void onSuccess(UserData body) {
+                                                    serverResponse.onSuccess(email);
+                                                }
+
+                                                @Override
+                                                public void onFailure(Throwable error) {
+
+                                                }
+                                            });
+                                        }
+                                    });
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.toString()));
+            }
+        });
+
+    }
     public void uploadFile(String fileNameWithExtension, Uri data, final ServerResponse<String> serverResponse) {
         final StorageReference sRef = mStorageReference.child(fileNameWithExtension);
         sRef.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

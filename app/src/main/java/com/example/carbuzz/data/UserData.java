@@ -1,6 +1,7 @@
 package com.example.carbuzz.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserData {
     private String name = null;
@@ -9,7 +10,7 @@ public class UserData {
     private String userImage = null;
     private String gender = null;
     private String password = null;
-    private ArrayList<WishListData> favouriteCars = new ArrayList<>();
+    private HashMap<String, WishListData> favouriteCars = new HashMap<>();
 
     public String getName() {
         return name;
@@ -59,11 +60,11 @@ public class UserData {
         this.password = password;
     }
 
-    public ArrayList<WishListData> getFavouriteCars() {
+    public HashMap<String, WishListData> getFavouriteCars() {
         return favouriteCars;
     }
 
-    public void setFavouriteCars(ArrayList<WishListData> favouriteCars) {
+    public void setFavouriteCars(HashMap<String, WishListData> favouriteCars) {
         this.favouriteCars = favouriteCars;
     }
 }
